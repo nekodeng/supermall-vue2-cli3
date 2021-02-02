@@ -1,10 +1,12 @@
 ## pic snip
-https://7.dusays.com/2021/02/02/d2c9e509163e4.png
+<a href="https://7.dusays.com/2021/02/02/d2c9e509163e4.png" target="_blank"></a>
 <br>
-https://7.dusays.com/2021/02/02/423d24c7dee46.png
+<a href="https://7.dusays.com/2021/02/02/423d24c7dee46.png" target="_blank"></a>
 
 ## option
-The APP of this project is more friendly to the mobile end, and it uses the Beter-scroll plug-in, which is more conducive to the sliding effect of the mobile end, even the PC end
+The APP of this project is more friendly to the mobile end, and it uses the Beter-scroll plug-in, 
+<br>
+which is more conducive to the sliding effect of the mobile end, even the PC end
 
 ## Technology used
 ```
