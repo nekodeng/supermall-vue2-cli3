@@ -1,8 +1,7 @@
 ## pic snip
-<a href="https://7.dusays.com/2021/02/02/d2c9e509163e4.png" target="_blank"></a>
+![项目截图](https://7.dusays.com/2021/02/02/d2c9e509163e4.png)
 <br>
-<a href="https://7.dusays.com/2021/02/02/423d24c7dee46.png" target="_blank"></a>
-
+![项目截图](https://7.dusays.com/2021/02/02/423d24c7dee46.png)
 ## option
 The APP of this project is more friendly to the mobile end, and it uses the Beter-scroll plug-in, 
 <br>
