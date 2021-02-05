@@ -1,4 +1,19 @@
-# supermall
+## pic snip
+![项目截图](https://7.dusays.com/2021/02/02/d2c9e509163e4.png)
+![项目截图](https://7.dusays.com/2021/02/02/423d24c7dee46.png)
+## option
+The APP of this project is more friendly to the mobile end, and it uses the Beter-scroll plug-in, 
+<br>
+which is more conducive to the sliding effect of the mobile end, even the PC end
+
+## Technology used
+```
+vue2.x
+vuecli3 
+webpack 
+axios 
+......
+```
 
 ## Project setup
 ```
