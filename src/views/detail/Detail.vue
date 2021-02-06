@@ -23,6 +23,7 @@
       </nav-bar>
     </div>
 
+    <!-- 详情中间部分信息 -->
     <scroll class="content" ref="scroll" :probe-type="4" @scroll="contenScroll">
     <!-- 详情页轮播图 -->
     <detail-swiper :top-images="topImages"></detail-swiper>
@@ -45,6 +46,12 @@
     <!-- 详情页推荐栏 -->
     <goods-list ref="recommend" :goods="recommends" @imageLoad="imageLoad"></goods-list>
     </scroll>
+
+    <!-- 详情底部bar -->
+    <detail-bottom-bar @addCart="addToCart"></detail-bottom-bar>
+
+    <!-- 回到顶部按钮 -->
+    <back-top @click.native="backTop" v-show="isShowBackTop"/>
   </div>
 </template>
 
@@ -56,9 +63,11 @@ import DetailShopInfo from './childComps/DetailShopInfo'
 import DetailGoodsInfo from './childComps/DetailGoodsInfo'
 import DetailParamInfo from './childComps/DetailParamInfo'
 import DetailCommentInfo from './childComps/DetailCommentInfo'
+import DetailBottomBar from './childComps/DetailBottomBar'
 
 import Scroll from 'components/common/scroll/Scroll'
 import GoodsList from 'components/content/goods/GoodsList'
+import BackTop from 'components/content/backTop/BackTop'
 
 import {getDetail, Goods, Shop, GoodsParam, getRecommend} from "network/detail"
 
@@ -73,7 +82,9 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
-    GoodsList
+    GoodsList,
+    DetailBottomBar,
+    BackTop
   },
   data() {
     return {
@@ -88,6 +99,7 @@ export default {
       commentInfo: {},
       recommends: [],
       themTopYs: [],
+      isShowBackTop: false
     }
   },
   created() {
@@ -136,13 +148,10 @@ export default {
   //   this.themTopYs.push(this.$refs.recommend.$el.offsetTop)
   // },
   methods: {
-    // titleClick(index) {
-    //   this.currentIndex = index;
-    //   this.$emit('titleClick', index)
-    // },
     backClick() {
       this.$router.back()
     },
+
     imageLoad() {
       this.$refs.scroll.refresh()
 
@@ -152,10 +161,18 @@ export default {
       this.themTopYs.push(this.$refs.comment.$el.offsetTop)
       this.themTopYs.push(this.$refs.recommend.$el.offsetTop)
     },
+
     titleClick(index) {
       this.currentIndex = index;
       this.$refs.scroll.scrollTo(0, -this.themTopYs[index], 200)
     },
+
+    // 回到顶部
+    backTop() {
+      this.$refs.scroll.scrollTo(0, 0)
+      this.isShowBackTop = false
+    },
+
     contenScroll(position) {
       //1.获取y值
       const positionY = -position.y
@@ -171,6 +188,23 @@ export default {
             this.$refs.nav.currentIndex = this.currentIndex
           }
       }
+
+      //3.判断backtop是否显示
+      this.isShowBackTop = (-position.y) > 1000
+    },
+
+    // 监听购物车点击事件
+    addToCart() {
+      //1.获取购物车里的商品信息
+      const product = {}
+      product.image = this.topImages[0]
+      product.title = this.goodsInfo.title
+      product.desc = this.goodsInfo.desc
+      product.price = this.goodsInfo.realPrice
+      product.iid = this.iid
+
+      //2.将商品添加到购物车
+      this.$store.commit('addCart', product)
     }
   }
 }
@@ -202,7 +236,7 @@ export default {
     margin-top: 12px;
   }
   .content {
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 49px);
   }
   .back img {
     width: 32%;
