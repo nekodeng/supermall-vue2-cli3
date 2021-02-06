@@ -51,5 +51,11 @@ export default {
 <style scoped>
   .info-list img {
     width: 100%;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 5px solid #f2f5f8;
+  }
+  .goods-info {
+    padding: 10px;
   }
 </style>

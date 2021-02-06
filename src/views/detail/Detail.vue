@@ -16,12 +16,14 @@
           class="title-item"
           :class="{active: index === currentIndex}"
           @click="titleClick(index)"
+          @titleClick="titleClick(index)"
+          ref="nav"
           >{{item}}</div>
         </div>
       </nav-bar>
     </div>
 
-    <scroll class="content" ref="scroll">
+    <scroll class="content" ref="scroll" :probe-type="4" @scroll="contenScroll">
     <!-- 详情页轮播图 -->
     <detail-swiper :top-images="topImages"></detail-swiper>
 
@@ -35,9 +37,14 @@
     <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"></detail-goods-info>
 
     <!-- 商品参数栏 -->
-    <detail-param-info :param-info="paramInfo"></detail-param-info>
+    <detail-param-info ref="params" :param-info="paramInfo" @imageLoad="imageLoad"></detail-param-info>
+
+    <!-- 评论信息栏 -->
+    <detail-comment-info ref="comment" :comment-info="commentInfo" @imageLoad="imageLoad"></detail-comment-info>
+
+    <!-- 详情页推荐栏 -->
+    <goods-list ref="recommend" :goods="recommends" @imageLoad="imageLoad"></goods-list>
     </scroll>
-    
   </div>
 </template>
 
@@ -48,10 +55,12 @@ import DetailBaseInfo from './childComps/DetailBaseInfo'
 import DetailShopInfo from './childComps/DetailShopInfo'
 import DetailGoodsInfo from './childComps/DetailGoodsInfo'
 import DetailParamInfo from './childComps/DetailParamInfo'
+import DetailCommentInfo from './childComps/DetailCommentInfo'
 
 import Scroll from 'components/common/scroll/Scroll'
+import GoodsList from 'components/content/goods/GoodsList'
 
-import {getDetail, Goods, Shop, GoodsParam} from "network/detail"
+import {getDetail, Goods, Shop, GoodsParam, getRecommend} from "network/detail"
 
 export default {
   name: "Detail",
@@ -62,8 +71,9 @@ export default {
     DetailShopInfo,
     Scroll,
     DetailGoodsInfo,
-    DetailParamInfo
-    
+    DetailParamInfo,
+    DetailCommentInfo,
+    GoodsList
   },
   data() {
     return {
@@ -74,7 +84,10 @@ export default {
       goods: {},
       shop: {},
       detailInfo: {},
-      paramInfo: {}
+      paramInfo: {},
+      commentInfo: {},
+      recommends: [],
+      themTopYs: [],
     }
   },
   created() {
@@ -103,17 +116,61 @@ export default {
 
       //5.获取商品参数信息
       this.paramInfo = new GoodsParam(data.itemParams.info, data.itemParams.rule, )
+
+      //取出评论信息
+      if(data.rate.cRate !== 0) {
+        this.commentInfo = data.rate.list[0]
+      }
+      
     }) 
+  
+    //3.请求详情页推荐数据
+    getRecommend().then(res => {
+      this.recommends = res.data.list
+    })
   },
+  // updated() {
+  //   this.themTopYs.push(0)
+  //   this.themTopYs.push(this.$refs.params.$el.offsetTop)
+  //   this.themTopYs.push(this.$refs.comment.$el.offsetTop)
+  //   this.themTopYs.push(this.$refs.recommend.$el.offsetTop)
+  // },
   methods: {
-    titleClick(index) {
-      this.currentIndex = index
-    },
+    // titleClick(index) {
+    //   this.currentIndex = index;
+    //   this.$emit('titleClick', index)
+    // },
     backClick() {
       this.$router.back()
     },
     imageLoad() {
-      this.$refs.Scroll.refresh()
+      this.$refs.scroll.refresh()
+
+      this.themTopYs = []
+      this.themTopYs.push(0)
+      this.themTopYs.push(this.$refs.params.$el.offsetTop)
+      this.themTopYs.push(this.$refs.comment.$el.offsetTop)
+      this.themTopYs.push(this.$refs.recommend.$el.offsetTop)
+    },
+    titleClick(index) {
+      this.currentIndex = index;
+      this.$refs.scroll.scrollTo(0, -this.themTopYs[index], 200)
+    },
+    contenScroll(position) {
+      //1.获取y值
+      const positionY = -position.y
+
+      //2.positionY和主题中的值进行对比
+      let length = this.themTopYs.length
+      for(let i=0; i < length; i++) {
+        if(this.currentIndex !== i && ((i < length - 1 &&
+         positionY >= this.themTopYs[i] &&
+          positionY < this.themTopYs[i+1]) ||
+          (i === length - 1 && positionY > this.themTopYs[i]))) {
+            this.currentIndex = i
+            this.$refs.nav.currentIndex = this.currentIndex
+          }
+      }
     }
   }
 }
@@ -146,5 +203,8 @@ export default {
   }
   .content {
     height: calc(100% - 44px);
+  }
+  .back img {
+    width: 32%;
   }
   </style>

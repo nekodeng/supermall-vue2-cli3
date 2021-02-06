@@ -64,7 +64,9 @@
         currentType: 'pop',
         isShowBackTop: false,
         tabOffsetTop: 0,
-        isTabFixed: false
+        isTabFixed: false,
+        saveY: 0,
+        itemImgListener: null
       }
     },
     computed: {
@@ -77,7 +79,11 @@
       this.$refs.scroll.refresh()
     },
     deactivated() {
+      //保存y值
       this.saveY = this.$refs.scroll.getScrollY()
+
+      //取消全局事件的监听
+      this.$bus.$off(itemImgLoad, )
     },
     created() {
       // 1.请求多个数据

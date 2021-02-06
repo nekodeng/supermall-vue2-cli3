@@ -52,6 +52,11 @@ export default {
 </script>
 
 <style scoped>
+  .shop-top img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+  }
   .shop-middle-right .score-better
   {
     color: #f13e3a!important;
@@ -66,5 +71,11 @@ export default {
     background-color: #5ea732;
     color: #fff;
     text-align: center;
+  }
+  .shop-info {
+    padding: 12px;
+  }
+  .shop-top img {
+    vertical-align: middle;
   }
 </style>

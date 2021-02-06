@@ -17,6 +17,7 @@
       <img :src="paramInfo.image" >
     </div>
   </div>
+  <div v-else class="no-param">此商品暂无参数信息</div>
 </template>
 
 <script>
@@ -58,5 +59,15 @@ export default {
   }
   .info-img img {
     width: 100%;
+  }
+  .param-value {
+    color: var(--color-high-text);
+  }
+  .no-param {
+    padding: 20px 12px;
+    text-align: center;
+    border-bottom: 5px solid #f2f5f8;
+    margin-bottom: 12px;
+    font-size: 14px;
   }
 </style>
