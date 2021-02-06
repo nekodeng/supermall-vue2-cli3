@@ -21,6 +21,7 @@
       </nav-bar>
     </div>
 
+    <scroll class="content" ref="scroll">
     <!-- 详情页轮播图 -->
     <detail-swiper :top-images="topImages"></detail-swiper>
 
@@ -30,28 +31,13 @@
     <!-- 商家信息栏 -->
     <detail-shop-info :shop="shop"></detail-shop-info>
 
+    <!-- 商品介绍栏 -->
+    <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"></detail-goods-info>
 
-
-
-
-    <ul>
-    <li>发的啥饭的</li>
-    <li>发的啥饭的</li>
-     <li>发的啥饭的</li>
-    <li>发的啥饭的</li>
-     <li>发的啥饭的</li>
-    <li>发的啥饭的</li>
-     <li>发的啥饭的</li>
-    <li>发的啥饭的</li>
-     <li>发的啥饭的</li>
-    <li>发的啥饭的</li>
-     <li>发的啥饭的</li>
-    <li>发的啥饭的</li>
-     <li>发的啥饭的</li>
-    <li>发的啥饭的</li>
-     <li>发的啥饭的</li>
-    <li>发的啥饭的</li>
-  </ul>
+    <!-- 商品参数栏 -->
+    <detail-param-info :param-info="paramInfo"></detail-param-info>
+    </scroll>
+    
   </div>
 </template>
 
@@ -60,8 +46,12 @@ import NavBar from 'components/common/navbar/NavBar'
 import DetailSwiper from './childComps/DetailSwiper'
 import DetailBaseInfo from './childComps/DetailBaseInfo'
 import DetailShopInfo from './childComps/DetailShopInfo'
+import DetailGoodsInfo from './childComps/DetailGoodsInfo'
+import DetailParamInfo from './childComps/DetailParamInfo'
 
-import {getDetail, Goods, Shop} from "network/detail"
+import Scroll from 'components/common/scroll/Scroll'
+
+import {getDetail, Goods, Shop, GoodsParam} from "network/detail"
 
 export default {
   name: "Detail",
@@ -69,7 +59,11 @@ export default {
     NavBar,
     DetailSwiper,
     DetailBaseInfo,
-    DetailShopInfo
+    DetailShopInfo,
+    Scroll,
+    DetailGoodsInfo,
+    DetailParamInfo
+    
   },
   data() {
     return {
@@ -78,7 +72,9 @@ export default {
       currentIndex: 0,
       topImages: [],
       goods: {},
-      shop: {}
+      shop: {},
+      detailInfo: {},
+      paramInfo: {}
     }
   },
   created() {
@@ -101,6 +97,12 @@ export default {
 
       // 3.创建店铺信息
       this.shop = new Shop (data.shopInfo)
+
+      //4.获取商品的详情数据
+      this.detailInfo = data.detailInfo
+
+      //5.获取商品参数信息
+      this.paramInfo = new GoodsParam(data.itemParams.info, data.itemParams.rule, )
     }) 
   },
   methods: {
@@ -109,12 +111,26 @@ export default {
     },
     backClick() {
       this.$router.back()
+    },
+    imageLoad() {
+      this.$refs.Scroll.refresh()
     }
   }
 }
 </script>
 
 <style scoped>
+  #detail {
+    position: relative;
+    background-color: #fff;
+    z-index: 9;
+    height: 100vh;
+  }
+  .detail-item {
+    position: inherit;
+    z-index: 9;
+    background-color: #fff;
+  }
   .title {
     display: flex;
   }
@@ -127,5 +143,8 @@ export default {
   }
   .back img {
     margin-top: 12px;
+  }
+  .content {
+    height: calc(100% - 44px);
   }
   </style>
