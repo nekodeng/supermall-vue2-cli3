@@ -25,6 +25,7 @@
 
     <!-- 详情中间部分信息 -->
     <scroll class="content" ref="scroll" :probe-type="4" @scroll="contenScroll">
+
     <!-- 详情页轮播图 -->
     <detail-swiper :top-images="topImages"></detail-swiper>
 
@@ -52,6 +53,9 @@
 
     <!-- 回到顶部按钮 -->
     <back-top @click.native="backTop" v-show="isShowBackTop"/>
+
+    <!-- 加入购物车时的提示弹窗Toast -->
+    <toast :message="message" :show="show"></toast>
   </div>
 </template>
 
@@ -68,6 +72,7 @@ import DetailBottomBar from './childComps/DetailBottomBar'
 import Scroll from 'components/common/scroll/Scroll'
 import GoodsList from 'components/content/goods/GoodsList'
 import BackTop from 'components/content/backTop/BackTop'
+import Toast from 'components/common/toast/Toast'
 
 import {getDetail, Goods, Shop, GoodsParam, getRecommend} from "network/detail"
 
@@ -84,7 +89,8 @@ export default {
     DetailCommentInfo,
     GoodsList,
     DetailBottomBar,
-    BackTop
+    BackTop,
+    Toast
   },
   data() {
     return {
@@ -99,7 +105,10 @@ export default {
       commentInfo: {},
       recommends: [],
       themTopYs: [],
-      isShowBackTop: false
+      isShowBackTop: false,
+      goodsInfo: {},
+      message: '',
+      show: false
     }
   },
   created() {
@@ -127,13 +136,15 @@ export default {
       this.detailInfo = data.detailInfo
 
       //5.获取商品参数信息
-      this.paramInfo = new GoodsParam(data.itemParams.info, data.itemParams.rule, )
+      this.paramInfo = new GoodsParam(data.itemParams.info, data.itemParams.rule)
 
-      //取出评论信息
+      //6.取出评论信息
       if(data.rate.cRate !== 0) {
         this.commentInfo = data.rate.list[0]
       }
-      
+
+      //7.创建商品的对象
+      this.goodsInfo = new Goods(data.itemInfo, data.columns, data.shopInfo.services)
     }) 
   
     //3.请求详情页推荐数据
@@ -204,7 +215,16 @@ export default {
       product.iid = this.iid
 
       //2.将商品添加到购物车
-      this.$store.commit('addCart', product)
+      // this.$store.commit('addCart', product)
+      this.$store.dispatch('addCart', product).then(res => {
+        this.show = true
+        this.message = res
+        setTimeout(() => {
+          this.show = false
+          this.message = ''
+        },1500)
+      })
+     
     }
   }
 }

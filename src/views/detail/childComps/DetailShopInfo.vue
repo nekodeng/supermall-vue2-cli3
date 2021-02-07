@@ -10,7 +10,7 @@
     <div class="shop-middle">
       <div class="shop-middle-item shop-middle-left">
         <div class="info-sells">
-          <div class="sells-count">{{shop.sells | sellCountFilter}}</div>
+          <div class="sells-count">{{shop.sells}}</div>
           <div class="sell-text">总销量</div>
         </div>
         <div class="info-goods">

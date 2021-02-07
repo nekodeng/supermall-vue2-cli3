@@ -83,7 +83,7 @@
       this.saveY = this.$refs.scroll.getScrollY()
 
       //取消全局事件的监听
-      this.$bus.$off(itemImgLoad, )
+      // this.$bus.$off(itemImgLoad)
     },
     created() {
       // 1.请求多个数据
