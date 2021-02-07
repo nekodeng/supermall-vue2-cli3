@@ -52,10 +52,22 @@ export default {
 </script>
 
 <style scoped>
+  .shop-middle-item {
+    text-align: center;
+  }
   .shop-top img {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
+    margin-right: 8px;
+  }
+  .shop-middle {
+    display: flex;
+    padding: 12px;
+  }
+  .shop-middle-right, .shop-middle-left {
+    flex: 1;
+    display: flex;
   }
   .shop-middle-right .score-better
   {
@@ -74,8 +86,32 @@ export default {
   }
   .shop-info {
     padding: 12px;
+    border-bottom: 5px solid #f2f5f8;;
   }
   .shop-top img {
     vertical-align: middle;
+  }
+  .enter-shop {
+    background-color: #eee;
+    padding: 8px 16px;
+    text-align: center;
+    width: 40%;
+    margin: 0 auto;
+  }
+  .shop-bottom {
+    margin-top: 12px;
+  }
+  .shop-middle-right {
+    padding-left: 6px;
+  }
+  .info-sells, .info-goods {
+    flex: 1;
+    padding-top: 6px;
+  }
+  .sells-count, .goods-count {
+    margin-bottom: 6px;
+  }
+  .shop-middle-right table tr {
+    margin-bottom: 4px;
   }
 </style>

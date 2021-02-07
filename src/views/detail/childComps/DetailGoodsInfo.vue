@@ -58,4 +58,8 @@ export default {
   .goods-info {
     padding: 10px;
   }
+  .desc {
+    padding: 12px;
+    border-bottom: 5px solid #f2f5f8;;
+  }
 </style>
