@@ -1,3 +1,4 @@
+//主页数据请求axios
 import {request} from "./request";
 
 export function getHomeMultidata() {

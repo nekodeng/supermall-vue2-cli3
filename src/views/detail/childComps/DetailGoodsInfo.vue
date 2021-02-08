@@ -62,4 +62,8 @@ export default {
     padding: 12px;
     border-bottom: 5px solid #f2f5f8;;
   }
+  .info-key {
+    margin: 12px auto;
+    text-align: center;
+  }
 </style>

@@ -151,8 +151,8 @@
 
 <style scoped>
   .wrapper {
-    height: 150px;
-    background-color: red;
+    height: calc(100vh - 49px);
+    background-color: pink;
 
     overflow: hidden;
     /*overflow-y: scroll;*/
